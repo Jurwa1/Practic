@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Каталог товаров{% endblock %}
+{% block content %}
+<h1>Каталог товаров</h1>
+
+{% if message == 'saved' %}
+    <div class="message">Товар сохранен.</div>
+{% elif message == 'deleted' %}
+    <div class="message">Товар удален.</div>
+{% elif message == 'error' %}
+    <div class="error">Нельзя удалить товар, который есть в заказах.</div>
+{% endif %}
+
+<form method="get" class="filters">
+    <input type="text" name="search" placeholder="Поиск по названию" value="{{ search }}">
+    <select name="category_id">
+        <option value="0">Все категории</option>
+        {% for category in categories %}
+            <option value="{{ category.id }}" {% if category.id == category_id %}selected{% endif %}>{{ category.name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn">Найти</button>
+    <a href="{{ url_for('products') }}" class="btn btn-gray">Сбросить</a>
+    <a href="{{ url_for('product_form') }}" class="btn btn-green" style="float: right;">Добавить товар</a>
+</form>
+
+<table>
+    <tr>
+        <th>Название</th>
+        <th>Категория</th>
+        <th>Бренд</th>
+        <th>Цена</th>
+        <th>Остаток</th>
+        <th>Действия</th>
+    </tr>
+    {% for product in products %}
+        <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.category_name or '' }}</td>
+            <td>{{ product.brand_name or '' }}</td>
+            <td>{{ product.price | money }}</td>
+            <td {% if product.stock_quantity < 5 %}class="low-stock"{% endif %}>{{ product.stock_quantity }} шт.</td>
+            <td>
+                <a href="{{ url_for('product_form', product_id=product.id) }}" class="btn">Редактировать</a>
+                <form method="post" action="{{ url_for('product_delete', product_id=product.id) }}" style="display: inline;" onsubmit="return confirm('Удалить товар?');">
+                    <button type="submit" class="btn btn-red">Удалить</button>
+                </form>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="6">Товары не найдены.</td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}

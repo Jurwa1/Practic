@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Заказ {{ order.order_number }}{% endblock %}
+{% block content %}
+<h1>Заказ № {{ order.order_number }}</h1>
+
+{% if saved %}
+    <div class="message">Статус заказа обновлен.</div>
+{% endif %}
+
+<p><b>Дата:</b> {{ order.created_at | date }}</p>
+<p><b>Клиент:</b> {{ order.customer_name }}</p>
+<p><b>Телефон:</b> {{ order.customer_phone or '' }}</p>
+<p>
+    <b>Статус:</b>
+    <span class="badge badge-{{ order.status }}">{{ statuses.get(order.status, order.status) }}</span>
+</p>
+
+<form method="post" action="{{ url_for('order_status', order_id=order.id) }}">
+    <input type="hidden" name="back" value="order">
+    <select name="status">
+        {% for key, label in statuses.items() %}
+            <option value="{{ key }}" {% if key == order.status %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn">Сменить статус</button>
+</form>
+
+<h2>Состав заказа</h2>
+
+<table>
+    <tr>
+        <th>Товар</th>
+        <th>Цена</th>
+        <th>Количество</th>
+        <th>Сумма</th>
+    </tr>
+    {% for item in items %}
+        <tr>
+            <td>{{ item.product_name or 'Товар удален' }}</td>
+            <td>{{ item.price | money }}</td>
+            <td>{{ item.quantity }} шт.</td>
+            <td>{{ (item.price * item.quantity) | money }}</td>
+        </tr>
+    {% endfor %}
+    <tr>
+        <td colspan="3" class="total">Итого:</td>
+        <td><b>{{ total | money }}</b></td>
+    </tr>
+</table>
+
+<p><a href="{{ url_for('orders') }}" class="btn btn-gray">Назад к заказам</a></p>
+{% endblock %}

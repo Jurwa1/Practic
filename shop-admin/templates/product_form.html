@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}{% if product_id %}Редактирование товара{% else %}Новый товар{% endif %}{% endblock %}
+{% block content %}
+<h1>{% if product_id %}Редактирование товара{% else %}Новый товар{% endif %}</h1>
+
+{% if errors %}
+    <div class="error">
+        {% for error in errors %}
+            <div>{{ error }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<form method="post">
+    <div class="form-row">
+        <label>Название</label>
+        <input type="text" name="name" value="{{ product.name }}">
+    </div>
+
+    <div class="form-row">
+        <label>Цена, ₽</label>
+        <input type="text" name="price" value="{{ product.price }}">
+    </div>
+
+    <div class="form-row">
+        <label>Описание</label>
+        <textarea name="description">{{ product.description or '' }}</textarea>
+    </div>
+
+    <div class="form-row">
+        <label>Количество на складе</label>
+        <input type="number" name="stock_quantity" min="0" value="{{ product.stock_quantity if product.stock_quantity is not none else 0 }}">
+    </div>
+
+    <div class="form-row">
+        <label>Категория</label>
+        <select name="category_id">
+            <option value="0">-- выберите --</option>
+            {% for category in categories %}
+                <option value="{{ category.id }}" {% if category.id == product.category_id %}selected{% endif %}>{{ category.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-row">
+        <label>Бренд</label>
+        <select name="brand_id">
+            <option value="0">-- выберите --</option>
+            {% for brand in brands %}
+                <option value="{{ brand.id }}" {% if brand.id == product.brand_id %}selected{% endif %}>{{ brand.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-green">Сохранить</button>
+    <a href="{{ url_for('products') }}" class="btn btn-gray">Отмена</a>
+</form>
+{% endblock %}
