@@ -1,0 +1,154 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: #f5f5f5;
+  color: #222;
+}
+
+.topbar {
+  background: #2d3e50;
+  color: #fff;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.brand {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.tabs a {
+  color: #d0d6dc;
+  text-decoration: none;
+  margin-right: 18px;
+  padding-bottom: 4px;
+}
+
+.tabs a.active {
+  color: #fff;
+  border-bottom: 2px solid #fff;
+}
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+h1 { font-size: 22px; }
+h2 { font-size: 18px; margin-top: 30px; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  margin-bottom: 20px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px 10px;
+  text-align: left;
+  font-size: 14px;
+}
+
+th { background: #eee; }
+
+tr.low-stock { background: #fde2e1; }
+
+td.empty {
+  text-align: center;
+  color: #888;
+}
+
+td.actions, th:last-child {
+  white-space: nowrap;
+}
+
+td.actions form {
+  display: inline;
+}
+
+/* статусы техники */
+.status {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.status-working { background: #2e8b3d; }
+.status-in_stock { background: #6c757d; }
+.status-broken { background: #c0392b; }
+.status-decommissioned { background: #555; }
+
+/* панель поиска */
+.toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+/* формы */
+.form {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin-bottom: 20px;
+  max-width: 500px;
+}
+
+.form label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.form input[type="text"],
+.form input[type="number"],
+.form select,
+.form textarea {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.form-inline {
+  max-width: none;
+  display: flex;
+  gap: 14px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.form-inline label {
+  margin-bottom: 0;
+}
+
+.form-actions {
+  margin-top: 10px;
+}
+
+input, select, textarea, button {
+  font-family: inherit;
+}
+
+button, .btn, input[type="submit"] {
+  background: #2d3e50;
+  color: #fff;
+  border: none;
+  padding: 7px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+button:hover, .btn:hover { background: #1f2c38; }

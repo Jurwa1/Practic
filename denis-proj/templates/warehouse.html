@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Склад — IT-учёт{% endblock %}
+{% block content %}
+<h1>Склад</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Наименование</th>
+      <th>Категория</th>
+      <th>Мин. порог</th>
+      <th>Остаток</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+    <tr {% if item.quantity <= item.min_threshold %}class="low-stock"{% endif %}>
+      <td>{{ item.name }}</td>
+      <td>{{ item.category or "—" }}</td>
+      <td>{{ item.min_threshold }}</td>
+      <td>{{ item.quantity }}</td>
+      <td class="actions">
+        <form method="post" action="/warehouse/{{ item.id }}/adjust">
+          <input type="hidden" name="delta" value="-1">
+          <button type="submit">-</button>
+        </form>
+        <form method="post" action="/warehouse/{{ item.id }}/adjust">
+          <input type="hidden" name="delta" value="1">
+          <button type="submit">+</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5" class="empty">Склад пуст</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>Добавить позицию</h2>
+<form method="post" action="/warehouse/new" class="form form-inline">
+  <label>Название
+    <input type="text" name="name" required>
+  </label>
+  <label>Категория
+    <input type="text" name="category">
+  </label>
+  <label>Количество
+    <input type="number" name="quantity" value="0" min="0">
+  </label>
+  <label>Мин. порог
+    <input type="number" name="min_threshold" value="0" min="0">
+  </label>
+  <button type="submit">Добавить</button>
+</form>
+{% endblock %}

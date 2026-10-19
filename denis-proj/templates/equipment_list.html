@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Главная — IT-учёт{% endblock %}
+{% block content %}
+<h1>Техника</h1>
+
+<form class="toolbar" method="get" action="/">
+  <input type="text" name="q" value="{{ query }}" placeholder="Поиск по названию или инв. номеру">
+  <select name="status">
+    <option value="">Все статусы</option>
+    {% for key, label in statuses.items() %}
+    <option value="{{ key }}" {% if status == key %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit">Найти</button>
+  <a class="btn" href="/equipment/new">Добавить</a>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th>Инв. номер</th>
+      <th>Устройство</th>
+      <th>Модель</th>
+      <th>Кабинет</th>
+      <th>Сотрудник</th>
+      <th>IP-адрес</th>
+      <th>Статус</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for d in devices %}
+    <tr>
+      <td><a href="/equipment/{{ d.id }}">{{ d.inventory_number }}</a></td>
+      <td>{{ d.device_type }}</td>
+      <td>{{ d.model or "—" }}</td>
+      <td>{{ d.room_number or "—" }}</td>
+      <td>{{ d.employee_name or "—" }}</td>
+      <td>{{ d.ip_address or "—" }}</td>
+      <td><span class="status status-{{ d.status }}">{{ statuses[d.status] }}</span></td>
+      <td class="actions">
+        <a href="/equipment/{{ d.id }}/edit">Изменить</a>
+        <form method="post" action="/equipment/{{ d.id }}/delete" onsubmit="return confirm('Удалить это устройство?');">
+          <button type="submit">Удалить</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="8" class="empty">Ничего не найдено</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

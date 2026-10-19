@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Журнал ремонтов — IT-учёт{% endblock %}
+{% block content %}
+<h1>Журнал ремонтов</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Дата</th>
+      <th>Устройство</th>
+      <th>Кто чинил</th>
+      <th>Что сделали</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in entries %}
+    <tr>
+      <td>{{ r.repair_date }}</td>
+      <td><a href="/equipment/{{ r.equipment_id }}">{{ r.inventory_number }} — {{ r.device_type }}{% if r.model %} {{ r.model }}{% endif %}</a></td>
+      <td>{{ r.admin_name }}</td>
+      <td>{{ r.description }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4" class="empty">Записей пока нет</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

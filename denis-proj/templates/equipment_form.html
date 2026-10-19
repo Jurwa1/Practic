@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}{% if device %}Редактирование{% else %}Новое устройство{% endif %} — IT-учёт{% endblock %}
+{% block content %}
+<h1>{% if device %}Редактирование устройства{% else %}Новое устройство{% endif %}</h1>
+
+<form method="post" class="form">
+  <label>Инвентарный номер
+    <input type="text" name="inventory_number" value="{{ device.inventory_number if device else '' }}" required>
+  </label>
+
+  <label>Тип устройства
+    <select name="device_type">
+      {% for t in device_types %}
+      <option value="{{ t }}" {% if device and device.device_type == t %}selected{% endif %}>{{ t }}</option>
+      {% endfor %}
+    </select>
+  </label>
+
+  <label>Модель
+    <input type="text" name="model" value="{{ device.model if device else '' }}">
+  </label>
+
+  <label>Характеристики
+    <textarea name="specs" rows="2">{{ device.specs if device else '' }}</textarea>
+  </label>
+
+  <label>Кабинет
+    <select name="room_id">
+      <option value="">—</option>
+      {% for r in rooms %}
+      <option value="{{ r.id }}" {% if device and device.room_id == r.id %}selected{% endif %}>{{ r.room_number }} (эт. {{ r.floor }})</option>
+      {% endfor %}
+    </select>
+  </label>
+
+  <label>Сотрудник
+    <select name="employee_id">
+      <option value="">—</option>
+      {% for e in employees %}
+      <option value="{{ e.id }}" {% if device and device.employee_id == e.id %}selected{% endif %}>{{ e.full_name }}</option>
+      {% endfor %}
+    </select>
+  </label>
+
+  <label>IP-адрес
+    <input type="text" name="ip_address" value="{{ device.ip_address if device else '' }}">
+  </label>
+
+  <label>Статус
+    <select name="status">
+      {% for key, label in statuses.items() %}
+      <option value="{{ key }}" {% if device and device.status == key or (not device and key == 'in_stock') %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </label>
+
+  <div class="form-actions">
+    <button type="submit">Сохранить</button>
+    <a href="/">Отмена</a>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}IT-учёт{% endblock %}</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <span class="brand">IT-учёт</span>
+  <nav class="tabs">
+    <a class="{% if active == 'equipment' %}active{% endif %}" href="/">Главная</a>
+    <a class="{% if active == 'warehouse' %}active{% endif %}" href="/warehouse">Склад</a>
+    <a class="{% if active == 'repairs' %}active{% endif %}" href="/repairs">Журнал ремонтов</a>
+  </nav>
+</header>
+<main class="page">
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

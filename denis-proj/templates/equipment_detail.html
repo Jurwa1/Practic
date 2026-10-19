@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}{{ device.inventory_number }} — IT-учёт{% endblock %}
+{% block content %}
+<a href="/">&larr; Ко всей технике</a>
+
+<h1>{{ device.device_type }}{% if device.model %} — {{ device.model }}{% endif %}</h1>
+<p>{{ device.inventory_number }} &middot; <span class="status status-{{ device.status }}">{{ statuses[device.status] }}</span></p>
+
+<table class="specs">
+  <tr><th>Тип</th><td>{{ device.device_type }}</td></tr>
+  <tr><th>Модель</th><td>{{ device.model or "—" }}</td></tr>
+  <tr><th>Параметры</th><td>{{ device.specs or "—" }}</td></tr>
+  <tr><th>Кабинет</th><td>{{ device.room_number or "—" }}{% if device.floor %} (эт. {{ device.floor }}){% endif %}</td></tr>
+  <tr><th>Сотрудник</th><td>{{ device.employee_name or "—" }}</td></tr>
+  <tr><th>IP-адрес</th><td>{{ device.ip_address or "—" }}</td></tr>
+</table>
+
+<h2>История ремонтов</h2>
+
+<form method="post" action="/equipment/{{ device.id }}/repairs" class="form">
+  <label>Кто чинил
+    <input type="text" name="admin_name" required>
+  </label>
+  <label>Что сделали
+    <input type="text" name="description" required>
+  </label>
+  <button type="submit">Добавить запись</button>
+</form>
+
+<table>
+  <thead>
+    <tr><th>Дата</th><th>Кто чинил</th><th>Что сделали</th></tr>
+  </thead>
+  <tbody>
+    {% for r in repairs %}
+    <tr>
+      <td>{{ r.repair_date }}</td>
+      <td>{{ r.admin_name }}</td>
+      <td>{{ r.description }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="3" class="empty">Ремонтов пока не было</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
